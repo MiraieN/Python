@@ -1,4 +1,0 @@
-from time import sleep
-for z in range(0, 100, 10):
-    sleep(1)
-    print("Hacking Pentagon: ", z, " %")
