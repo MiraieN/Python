@@ -1,0 +1,101 @@
+# # Black Jack Game
+import random
+import time
+import math
+
+# fast_check = 0.07
+fast_check = 0
+
+
+def slow_typing(txt):
+    time.sleep(0.8)
+    print()
+    for letter in txt:
+        print(letter, end="")
+        time.sleep(0.07-fast_check)
+
+
+def hero_says(txt):
+    time.sleep(0.8)
+    print(txt)
+
+
+cards = {
+    "Joker": random.randint(0, 3),
+    "Tuz": 11,
+    "King": 4,
+    "Queen": 3,
+    "Oficer": 2,
+    "Ten": 10,
+    "Nine": 9,
+    "Eight": 8,
+    "Seven": 7,
+    "Six": 6
+}
+
+# deck fill
+deck = []
+for card in cards.keys():
+    for f in range(4):
+        deck.append(card)
+random.shuffle(deck)
+
+slow_typing("Hello traveler. Come play a match with me")
+hero_says("\n>What r we gonna play?")
+hero_says(">Screw u")
+if input().lower() == "what r we gonna play?":
+    slow_typing("Glad u asked! It is called\nBlack..\nJack")
+    slow_typing("Wanna hear the rules?")
+    hero_says("\n>yes")
+    hero_says(">no")
+    if input().lower() == "yes":
+        slow_typing("We have 2 players. U are gonna pick 1 card and sum the value to ur score")
+        slow_typing("U must get the closest to 21 with ur score")
+        slow_typing("U can pass when u want, ur score is saved so the next player starts picking")
+    slow_typing("Ok than\nshall\nWe\nSTART!")
+else:
+    slow_typing("U r DeaD =9")
+
+score_player_1 = 0
+score_player_2 = 0
+player_1 = True
+player_2 = True
+
+# main game
+slow_typing(f"Player_1 picks now")
+while player_1:
+    slow_typing("Take or Pass?\n")
+    if input().lower() == "take":
+        card_picked = deck.pop()
+        card_value = cards[card_picked]
+        score_player_1 += card_value
+        slow_typing(f"U picked {card_picked}\nUr score = {score_player_1}")
+        if score_player_1 > 21:
+            slow_typing(f"U overpicked, ur score is {score_player_1} now")
+            break
+    else:
+        print("Ur pass accepted")
+        player_1 = False
+slow_typing("Next player turn")
+slow_typing(f"Player_2 picks now")
+while player_2:
+    slow_typing("Take or Pass?\n")
+    if input().lower() == "take":
+        card_picked = deck.pop()
+        card_value = cards[card_picked]
+        score_player_2 += card_value
+        slow_typing(f"U picked {card_picked}\nUr score = {score_player_2}")
+        if score_player_2 > 21:
+            slow_typing(f"U overpicked, ur score is {score_player_2} now")
+            break
+    else:
+        print("Ur pass accepted")
+        player_2 = False
+slow_typing("Picking has ended")
+
+if math.fabs(21-score_player_1) < math.fabs(21-score_player_2):     # |(21-25)| = 4     |(21 - 18)| = 3
+    slow_typing("Player_1 wins the game")
+elif math.fabs(21-score_player_1) == math.fabs(21-score_player_2):
+    slow_typing("No one wins. Good match!")
+else:
+    slow_typing("Player_2 wins the game")
