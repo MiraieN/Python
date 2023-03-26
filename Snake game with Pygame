@@ -1,0 +1,162 @@
+import random
+import time
+
+import pygame
+
+# PyGame set
+pygame.init()
+
+# screen set
+scr_width, scr_height = 1200, 800
+scr = pygame.display.set_mode((scr_width, scr_height))
+
+# colors
+white = (255, 255, 255)
+black = (0, 0, 0)
+red = (255, 0, 0)
+
+# timer
+clock = pygame.time.Clock()
+
+# pygame.draw.rect(scr, 'white', tuple(pos.values()) + size)
+
+half_scr = scr_width / 2, scr_height / 2
+font_style = pygame.font.SysFont('None', 70)
+
+
+# snake
+pos = {'x': 350,
+       'y': 250}
+size = 30, 30
+
+
+def message(txt, color=black, x_pos=0, y_pos=0):
+    x = scr_width / 2 - scr_width / 4 + x_pos
+    y = scr_height / 2 - scr_height / 4 + y_pos
+    out = font_style.render(txt, True, color)
+    scr.blit(out, (x, y))
+
+
+def snake_draw(snake_list):
+    for x in snake_list:
+        pygame.draw.rect(scr, 'pink', (x[0], x[1]) + size)
+
+
+def game_loop():
+    pos = {'x': 350,
+           'y': 250}
+    # params speed affects
+    x_change, y_change = 0, 0
+    speed = 15
+
+    # food
+    food_x = round(random.randrange(0, scr_width - speed, speed) / 2) * 2
+    food_y = round(random.randrange(0, scr_height - speed, speed) / 2) * 2
+
+    snake_list = []
+    snake_len = 1
+
+    game_running = True
+    game_close = False
+    while game_running:
+
+        while game_close:
+            if snake_len-1 != 1:
+                message(f"you got {snake_len-1} points", red)
+            else:
+                message(f"you got {snake_len-1} point", red)
+            message("Press Q - Quit or A - Play again", red, - int(scr_width / 5), - int(scr_height / 4))
+            pygame.display.update()
+
+            for event in pygame.event.get():
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_q:
+                        game_running = False
+                        game_close = False
+                    if event.key == pygame.K_a:
+                        game_loop()
+
+        for event in pygame.event.get():
+            # click out
+            if event.type == pygame.QUIT:
+                game_running = False
+
+            # moving moving
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_LEFT:
+                    x_change = -speed
+                    y_change = 0
+                elif event.key == pygame.K_RIGHT:
+                    x_change = speed
+                    y_change = 0
+                elif event.key == pygame.K_UP:
+                    x_change = 0
+                    y_change = -speed
+                elif event.key == pygame.K_DOWN:
+                    x_change = 0
+                    y_change = speed
+                elif event.key == pygame.K_ESCAPE:
+                    game_close = True
+                    break
+
+        # out of bounds
+        if (pos['x'] > scr_width or pos['x'] < 0) or (pos['y'] > scr_height or pos['y'] < 0):
+            if pos['x'] != -100:
+                message("OUT OF BOUNDS", red)
+                pygame.display.update()
+                time.sleep(1.4)
+                game_close = True
+                pos['x'] = -100
+                pygame.draw.rect(scr, 'pink', tuple(pos.values()) + size)
+                pygame.draw.rect(scr, 'white', (-150, food_y) + (size[0] / 2, size[1] / 2))
+                scr.fill(black)
+
+        pos['x'] += x_change
+        pos['y'] += y_change
+
+        # scr renew
+        scr.fill(black)
+
+        # food draw
+        pygame.draw.rect(scr, white, (food_x, food_y) + (size[0] / 2, size[1] / 2))
+
+        snake_head = [pos['x'], pos['y']]
+
+        snake_list.append(snake_head)
+
+        # print(snake_list)
+
+        if len(snake_list) > snake_len:
+            del snake_list[0]
+
+        # if head on coors of body
+        for x in snake_list[:-1]:
+            if x == snake_head:
+                game_close = True
+
+        snake_draw(snake_list)
+        pygame.display.update()
+
+        # finds food
+        if pos['x'] in range(food_x - speed, food_x + speed) and pos['y'] in range(food_y - speed, food_y + speed):
+            print("eaten")
+
+            # food moving
+            food_x = round(random.randrange(0, scr_width - speed, speed) / 2) * 2
+            food_y = round(random.randrange(0, scr_height - speed, speed) / 2) * 2
+
+            snake_len += 1
+
+            speed += 2
+
+            print(f"snake_len: {snake_len}\nsnake_list: {snake_list}\nspeed:{speed}")
+
+        clock.tick(25)
+
+    pygame.quit()
+
+
+game_loop()
+
+
+
