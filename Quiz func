@@ -1,35 +1,50 @@
 from random import shuffle
 
 
-def question(q, correct, wrong, *sols):
-    a = -1
-    global res_score
-    cor_sol = sols[0]
+def question(ques, ans, wrong, *sols):
+    right_sol = sols[0]
+    user_ans = -1
     sols = list(sols)
     shuffle(sols)
-    while a not in range(1, len(sols)+1):
-        print(q)
+    global sum_ans
+    err = "Invalid input. You have to type nums 1-" + str(len(sols))
+    while user_ans not in range(1, len(sols)+1):
+        print(ques)
         for z in range(len(sols)):
-            print(str(z + 1) + ")", sols[z])
+            print(str(z+1) + ")", sols[z])
         try:
-            a = int(input("Your choice?\n"))
+            user_ans = int(input())
         except ValueError:
-            print("Incorrect. Type of the nums above\n")
-    if a == sols.index(cor_sol) + 1:
-        print("\n" + correct)
-        res_score += 1
+            print(err)
+            continue
+        if len(sols) < user_ans or user_ans < 1:
+            print(err)
+            continue
+    if user_ans == sols.index(right_sol)+1:
+        print(ans, "\n")
+        sum_ans += 1
     else:
-        print(wrong)
-        res_score += 0
+        print(wrong, "\n")
 
 
-res_score = 0
 
-question("What did the Hermione`s cat to help friends to pass the Iva?",
-                      "yeap, the lever. No random throwing of the tree",
-                      "go reread the third book. it is really amazing part of story",
-                      "pulled the lever", "he cried to disarrange it",
-                      "he scrapped it", "he sang a song to sleep it")
+sum_ans = 0
+question("What does Slughorn want to collect from Aragog after he dies?",
+                    "Yes, his venom has a high price on a black market",
+                    "No, it was his venom. It has a high price on a black market",
+                    "His venom", "His hair", "His blood", "His thorax"
+                    )
 
+question("Where does Mad-Eye Moody's eye wind up",
+                    "Yes, the ministry got his eye right after his death",
+                    "No, the ministry got his eye right after his death",
+                    "ON DOLORES UMBRIDGE'S OFFICE DOOR", "IN THE ROOM OF REQUIREMEN",
+                    "ON DUMBLEDORE'S DESK", "IN GRAWP'S STOMACH"
+                    )
 
-print("your score is:", res_score)
+question("What makes a person feel better after seeing a Dementor??",
+                    "Yes, Try some chocolate. It will help",
+                    "No, better try some chocolate. It will help",
+                    "chocolate", "a nap", "treacle pudding", "chicken soup"
+                    )
+print(f"u got {sum_ans} points")
