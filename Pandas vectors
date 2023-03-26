@@ -1,0 +1,110 @@
+# Program to compare distances passed by turtle using files and Pandas
+from turtle import *
+import pandas
+
+
+def first_mark():
+    x1 = str(round(xcor(), 3))
+    y1 = str(round(ycor(), 3))
+    file.write(f"{x1} {y1 + ' '}")
+    write(f"{x1},{y1}")
+
+def last_mark():
+    x2 = str(round(xcor(), 3))
+    y2 = str(round(ycor(), 3))
+    file.write(f"{x2} {y2}\n")
+    write(f"{x2},{y2}")
+
+
+file = open("coors.txt", "w+")
+
+# speed(0)
+width(5)
+for y in range(2):
+
+    first_mark()
+    fd(400)
+    last_mark()
+
+    pu()
+
+    rt(90)
+
+    first_mark()
+    fd(50)
+    last_mark()
+
+    rt(90)
+
+    pd()
+
+    first_mark()
+    fd(400)
+    last_mark()
+
+    lt(90)
+    pu()
+    first_mark()
+    fd(50)
+    last_mark()
+    lt(90)
+    pd()
+first_mark()
+fd(400)
+last_mark()
+pu()
+
+first_mark()
+home()
+last_mark()
+
+pd()
+
+file.close()
+
+df = pandas.read_csv('coors.txt', delim_whitespace=True, names=['x1', 'y1', 'x2', 'y2'])
+df = df.eval("dist = ((x1-x2)**2 + (y1-y2)**2) ** 0.5")
+print(df)
+res_without_go = df['dist'].sum()
+print(f"res_without_go = {res_without_go}")
+
+## with go
+file = open("coors.txt", "w+")
+
+reset()
+# speed(0)
+width(5)
+y_pos = 0
+for y in range(-50, -300, -50):
+
+    first_mark()
+    fd(400)
+    last_mark()
+
+    pu()
+
+    first_mark()
+    goto(0, y)
+    last_mark()
+
+    pd()
+pu()
+
+first_mark()
+home()
+last_mark()
+
+pd()
+
+file.close()
+
+df = pandas.read_csv('coors.txt', delim_whitespace=True, names=['x1', 'y1', 'x2', 'y2'])
+df = df.eval("dist = ((x1-x2)**2 + (y1-y2)**2) ** 0.5")
+print(df)
+res_with_go = df['dist'].sum()
+print(f"res_with_go = {res_with_go}")
+
+exitonclick()
+
+print(f"\nres_without_go = {round(res_without_go, 3)}"
+      f"\nres_with_go = {round(res_with_go, 3)}")
