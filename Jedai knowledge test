@@ -1,0 +1,102 @@
+# Jedi test
+right_answer = "Right!\nYou got 1 point"
+wrong_answer = "You missed!"
+
+import time
+
+user_name = input("Welcome to our Star Wars quiz! What's your name?\n")
+time.sleep(0.3)
+print(f"So, each question will be more difficult than the last... Ready, { user_name}? Here we go!")
+
+score = 0
+
+answer_1 = input("question_1 :\nWhat color was Luke Skywalker's lightsaber?\n").lower()
+if answer_1 == "green":
+    print(right_answer)
+    score += 1
+else:
+    print(wrong_answer)
+time.sleep(0.3)
+answer_2 = input("question_2 :\nOn what day is Star Wars Day celebrated?\n")
+if answer_2 == "4 May" or answer_2 == "May 4":
+    print(right_answer)
+    score += 1
+else:
+    print(wrong_answer)
+
+time.sleep(0.3)
+
+answer_3 = input("question_3 :\nWhat animal was the prototype for the character of Chewbacca?\n").lower()
+if answer_3 == "dog":
+    print(right_answer)
+    score += 1
+else:
+    print(wrong_answer)
+time.sleep(0.3)
+answer_4 = input("question_4 :\nTo whom does the phrase:\n- No. I am your father belong?\n").lower()
+if answer_4 == "darth vader":
+    print(right_answer)
+    score += 1
+else:
+    print(wrong_answer)
+
+time.sleep(0.3)
+
+answer_5 = input("question_5 :\nWhat used to be Darth Vader's name?\n").lower()
+if answer_5 == "anakin":
+    print(right_answer)
+    score += 1
+else:
+    print(wrong_answer)
+time.sleep(0.3)
+answer_6 = input("question_6 :\nHan Solo owned a modified cargo ship. What was its name?\n").lower()
+if answer_6 == "millennium falcon":
+    print(right_answer)
+    score += 1
+else:
+    print(wrong_answer)
+time.sleep(0.3)
+answer_7 = input("question_7 :\nWhat did the Jedi use as their primary weapon?\n").lower()
+if answer_7 == "lightsabers":
+    print(right_answer)
+    score += 1
+else:
+    print(wrong_answer)
+time.sleep(0.3)
+answer_8 = input("question_8 :\nWhat was the name of a race of small furry creatures from the satellite of Endor?\n").lower()
+if answer_8 == "ewoks":
+    print(right_answer)
+    score += 1
+else:
+    print(wrong_answer)
+
+time.sleep(0.3)
+
+answer_9 = input("question_9 :\nWhat color was Mace Windu's sword?\n").lower()
+if answer_9 == "purple":
+    print(right_answer)
+    score += 1
+else:
+    print(wrong_answer)
+
+time.sleep(0.3)
+
+answer_10 = input("question_10 :\nPrincess Leia's last name?\n").lower()
+if answer_10 == "organa":
+    print(right_answer)
+    score += 1
+else:
+    print(wrong_answer)
+
+time.sleep(1)
+
+print("You score is:", score, "correct answer of 10 questions")
+
+time.sleep(1)
+
+if score <= 3:
+    print(f"{user_name} you Padawan")
+elif score <= 8:
+    print(f"{user_name} you Jedi Master")
+elif score <= 10:
+    print(f"{user_name} you Grand-Master")
