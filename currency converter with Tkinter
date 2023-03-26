@@ -1,0 +1,61 @@
+import tkinter as tk
+from configparser import ConfigParser
+from tkinter import ttk
+import requests
+from currency_converter import CurrencyConverter
+
+
+def clicked_convert():
+
+    base_url = "https://api.apilayer.com/exchangerates_data/live?base=USD&symbols="
+    main_url = base_url + "&symbols=" + search_cur_type.get() + "," + search_to_cur_type.get() + \
+               "&amount=" + search_cur_amount.get() + " &apikey=" + api_key
+    req_ob = requests.get(main_url)
+    result = req_ob.json()
+    # доробити з датою
+
+    print(main_url)
+    res = 0
+    LabelBottom.config(text=round(res, 3))
+
+api_key = "b9RNzIBx6nS8BS5r3VDb1ytOI9IDldw0"
+conv = CurrencyConverter()
+
+root = tk.Tk()
+root.title("Currency app")
+root.config(background="black")
+root.geometry("590x800")
+
+curs_list = ["USD", "EUR", 'UAH']
+
+search_cur_amount = tk.StringVar()
+search_cur_type = tk.StringVar()
+search_to_cur_type = tk.StringVar()
+
+labelTop = tk.Label(root, text="From:", font=("Calibri", 30, "bold"))
+labelTop.grid()
+
+enter_cur_amount = tk.Entry(root, fg="blue", font=("Calibri", 22, "bold"), textvariable=search_cur_amount)
+enter_cur_amount.insert(0, "Enter amount")
+enter_cur_amount.grid(row=1, column=0, padx=10, pady=5)
+enter_cur_amount.bind("<Button-1>", lambda *args: enter_cur_amount.delete(0, 'end'))
+
+select_cur_type = ttk.Combobox(root, values=curs_list, font=("Calibri", 16, "bold"), textvariable=search_cur_type)
+select_cur_type.grid(row=1, column=1, padx=10, pady=5)
+select_cur_type.insert(0, "UAH")
+
+labelTop = tk.Label(root, text="To:", font=("Calibri", 30, "bold"))
+labelTop.grid(row=2, pady=5)
+
+select_to_cur_type = ttk.Combobox(root, values=curs_list, font=("Calibri", 16, "bold"), textvariable=search_to_cur_type)
+select_to_cur_type.grid(row=3, column=1, padx=10, pady=5)
+select_to_cur_type.insert(0, "USD")
+
+convert_button = tk.Button(root, text="CONVERT", width=20, bg="green", fg="white", font=("Calibri", 16, "bold"),
+                           command=clicked_convert)
+convert_button.grid(row=4, padx=10, pady=5)
+
+LabelBottom = tk.Label(root, text="Converted Amount:", font=("Calibri", 30, "bold"))
+LabelBottom.grid(row=5, column=0, pady=5)
+
+root.mainloop()
