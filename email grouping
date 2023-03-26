@@ -1,0 +1,14 @@
+# emails grouping with stats and average len
+def email_grouping(mails):
+      mails_info = {'domens': [], 'users': []}
+      for z in mails:
+          mails_info['domens'].append(z[z.rfind("@")+1:z.rfind(".")])
+          mails_info['users'].append(z[0:z.rfind("@")])
+      print(f"domens are: {mails_info['domens']}")
+      print(f"users are: {mails_info['users']}")
+      print(f"with average name length of: {round(sum([len(z) for z in mails_info['users']])/len(mails_info['users']), 2)}")
+      print("\nStatistics")
+      for z in set(mails_info["domens"]):
+          print(f"{z}: {int(mails_info['domens'].count(z) * 100 / len(mails_info['domens']))}%")
+          
+email_grouping(['suchagoodmail@gmail.com', 'qweasdzxcasd@ukr.net', 'asdasd@mail.ru', 'asdasd@gmail.com'])
