@@ -1,0 +1,32 @@
+def isValid(s):
+    sign_open = "({["
+    sign_close = ")}]"
+
+    # if string starts with closed bracket
+    if s[0] in sign_close:
+        return False
+
+    # if opened and closed brackets amount are not same
+    for i in range(len(sign_open)):
+        if s.count(sign_open[i]) != s.count(sign_close[i]):
+            return False
+
+    s_len = len(s)
+    checked = []
+
+    for i in range(s_len):
+        if i in checked:
+            continue
+        else:
+            match_sign = sign_close[sign_open.find(s[i])]
+        for j in range(i + 1, s_len):
+            if s[j] == match_sign and j not in checked:
+                checked.append(j)
+                break
+        else:
+            return False
+    return True
+print(isValid("()[]{}"))
+print(isValid("()][{}"))
+print(isValid("()))(("))
+print(isValid("[()()]"))
