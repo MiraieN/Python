@@ -1,0 +1,35 @@
+def compress_1(chars):
+    compressed = []
+    chars_len = len(chars)
+    elem = 0
+    if len(chars) == 1:
+        return chars
+    for i in range(chars_len):
+        if chars[i] == elem:
+            continue
+        for j in range(i, chars_len):
+            if chars[i] != chars[j] or j == chars_len - 1:
+                if i == 0:
+                    i += 1
+                num = j - i + 1
+                elem = chars[i]
+                compressed.append(elem)
+                if num != 1:
+                    compressed.extend(str(num))
+                break
+
+    return compressed
+
+# using built-in count
+def compress_2(chars):
+    comp = []
+    for elem in chars:
+        if elem in comp:
+            continue
+        comp.append(elem)
+        num = chars.count(elem)
+        if num != 1:
+            for e in str(num):
+                comp.append(e)
+
+    return comp
