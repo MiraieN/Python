@@ -1,0 +1,57 @@
+from tkinter import *
+from tkinter import messagebox
+
+
+def create_window(ques, correct):
+    def check_ans():
+        global success, failed, checks
+
+        if ent_ans.get() == correct:
+            messagebox.showinfo(message="Вірно")
+            success += 1
+            window.destroy()
+            return
+        else:
+            messagebox.showerror(message="Невірно")
+            checks -= 1
+            print(checks)
+
+        if checks == 0:
+            messagebox.showerror(message="Закінчились спроби")
+            failed += 1
+            window.destroy()
+            return
+
+
+    global checks
+    checks = 3
+    # print(checks)
+
+    window = Tk()
+    window.title("┐(￣ヘ￣)┌")
+    window.geometry("530x800+600+200")
+
+    lbl_ques = Label(text=ques, font=("comic sans ms", 22, "bold", "underline"), relief="raised")
+    ent_ans = Entry(font=("comic sans ms", 22, "bold", "underline"))
+    but_ans = Button(text="OK", font=("arial", 22, "bold"), bg="white", foreground="red", command=check_ans)
+
+    lbl_ques.pack()
+    ent_ans.pack()
+    but_ans.pack()
+
+    mainloop()
+
+
+success = 0
+failed = 0
+
+quess = {"ques1": "correct1",
+         "ques2": "correct2",
+         "ques3": "correct3",
+         "4": "4"}
+
+for ques, correct in quess.items():
+    create_window(ques, correct)
+
+print(f"success: {success}")
+print(f"failed: {failed}")
