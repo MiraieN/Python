@@ -1,0 +1,118 @@
+from tkinter import *
+from tkinter import messagebox
+
+root = Tk()
+root.title("Timer")
+root.geometry('610x390+700+300')
+root.configure(background="white")
+
+
+def vars_to_zero():
+    hourVar.set('00')
+    minnVar.set('00')
+    secVar.set('00')
+
+
+def clicked():
+    ok['state'] = 'disabled'
+    hour['state'] = 'disabled'
+    minn['state'] = 'disabled'
+    sec['state'] = 'disabled'
+    try:
+        amount = int(hour.get()) * 3600 + int(minn.get()) * 60 + int(sec.get())
+    except ValueError:
+        messagebox.showerror(message="Incorrect input")
+        amount = 0
+
+    hourlbl = Label(width=2, font=('futura', 90, 'bold'), textvariable=hourVar, background="white", borderwidth=0)
+    minnlbl = Label(width=2, font=('futura', 90, 'bold'), textvariable=minnVar, background="white", borderwidth=0)
+    seclbl = Label(width=2, font=('futura', 90, 'bold'), textvariable=secVar, background="white", borderwidth=0)
+
+    hourlbl.grid(row=0, column=0)
+    minnlbl.grid(row=0, column=2)
+    seclbl.grid(row=0, column=4)
+
+
+    while amount > -1:
+        root.after(500)
+        dots1['text'] = ' '
+        dots2['text'] = ' '
+        root.update()
+
+        root.after(500)
+
+        dots1['text'] = ':'
+        dots2['text'] = ':'
+        root.update()
+
+        amount -= 1
+
+        temp = amount
+        hourVar.set(str(amount // 3600))
+        if hourVar.get() == '0':
+            hourVar.set('00')
+        amount %= 3600
+
+        minnVar.set(str(amount // 60))
+        if minnVar.get() == '0':
+            minnVar.set('00')
+        amount %= 60
+
+        secVar.set(str(amount))
+        amount = temp
+
+        for which in (hourVar, minnVar, secVar):
+            if len(which.get()) == 1:
+                which.set('0' + which.get())
+
+    vars_to_zero()
+    if hourVar.get() == "00" and minnVar.get() == "00" and secVar.get() == "00":
+        messagebox.showinfo(message="Time is up")
+
+    ok["state"] = 'normal'
+    hour['state'] = 'normal'
+    minn['state'] = 'normal'
+    sec['state'] = 'normal'
+    for lbl in (hourlbl, minnlbl, seclbl):
+        lbl.destroy()
+
+
+hourVar = StringVar()
+minnVar = StringVar()
+secVar = StringVar()
+
+vars_to_zero()
+
+lab = Label(background="white")
+lab.place(x=0, y=0, width=600, height=380)
+
+hour = Entry(textvariable=hourVar, width=2, font=('futura', 90, 'bold'), background="white", borderwidth=0)
+minn = Entry(textvariable=minnVar, width=2, font=('futura', 90, 'bold'), background="white", borderwidth=0)
+sec = Entry(textvariable=secVar, width=2, font=('futura', 90, 'bold'), background="white", borderwidth=0)
+
+dots1 = Label(text=":", font=('futura', 90, 'bold'), width=1, background="white")
+dots2 = Label(text=":", font=('futura', 90, 'bold'), width=1, background="white")
+
+ok = Button(text="pognali", font=('ComicSans', 55, 'bold'), background="#F2F2F2", relief="flat", command=clicked)
+
+
+def show(event):
+    ok['background'] = "#B7B7B7"
+
+
+def deshow(event):
+    ok['background'] = "#F2F2F2"
+
+
+ok.bind('<Motion>', show)
+lab.bind('<Motion>', deshow)
+
+hour.grid(row=0, column=0, padx=10)
+dots1.grid(row=0, column=1)
+minn.grid(row=0, column=2)
+dots2.grid(row=0, column=3)
+sec.grid(row=0, column=4)
+Label(background="white").grid(row=1)
+ok.grid(columnspan=5, row=2)
+
+mainloop()
